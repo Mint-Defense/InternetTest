@@ -24,22 +24,18 @@ axios.interceptors.response.use(undefined, (err) => {
 const app = express()
 const port = 8081
 
-app.get('/', (req, res) => {
-  ;(async () => {
-    //only works for ERC-20/ERC-721
-    const response = await axios.get(
-      `https://webhook.site/3f0747a2-379e-426a-808f-5d9b42592524`,
-      { retry: 3, retryDelay: 1000 }
-    )
-    if (response.status) {
-      console.log('success')
-    } else {
-      throw 'Failed to get response from getTokenInfoByContractAddress()'
-    }
-  })().catch((err) => {
-    console.error(err)
-  })
-  res.send('Hello World!')
+app.get('/', async (req, res) => {
+  const response = await axios.get(
+    `https://webhook.site/3f0747a2-379e-426a-808f-5d9b42592524`,
+    { retry: 3, retryDelay: 1000 }
+  )
+  if (response.status) {
+    console.log('success')
+    res.send(response)
+  } else {
+    console.log('Failed to get response from getTokenInfoByContractAddress()')
+    res.send(response)
+  }
 })
 
 app.listen(port, () => {
