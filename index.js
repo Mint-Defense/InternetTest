@@ -25,16 +25,21 @@ const app = express()
 const port = 8081
 
 app.get('/', async (req, res) => {
-  const response = await axios.get(
-    `https://webhook.site/3f0747a2-379e-426a-808f-5d9b42592524`,
-    { retry: 3, retryDelay: 1000 }
-  )
-  if (response.status) {
-    console.log('success')
-    res.send(response)
-  } else {
-    console.log('Failed to get response from getTokenInfoByContractAddress()')
-    res.send(response)
+  try {
+    const response = await axios.get(
+      `https://webhook.site/3f0747a2-379e-426a-808f-5d9b42592524`,
+      { retry: 3, retryDelay: 1000 }
+    )
+    if (response.status) {
+      console.log(response)
+      res.send('success')
+    } else {
+      console.log(response)
+      res.send('Failed 1')
+    }
+  } catch (e) {
+    console.log(e)
+    res.send('Failed 2')
   }
 })
 
