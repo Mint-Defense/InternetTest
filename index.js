@@ -1,5 +1,8 @@
 const express = require('express')
 const axios = require('axios')
+const fetch = (...args) =>
+  import('node-fetch').then(({ default: fetch }) => fetch(...args))
+
 axios.defaults.timeout = 3000
 
 axios.interceptors.response.use(undefined, (err) => {
@@ -25,6 +28,14 @@ const app = express()
 const port = 8081
 
 app.get('/', async (req, res) => {
+  try {
+    const fetch_response = await fetch(
+      'https://webhook.site/3f0747a2-379e-426a-808f-5d9b42592524'
+    )
+  } catch (e) {
+    console.log(e)
+  }
+
   try {
     const response = await axios.get(
       `https://webhook.site/3f0747a2-379e-426a-808f-5d9b42592524`,
