@@ -1,6 +1,6 @@
 const express = require('express')
 const axios = require('axios')
-//axios.defaults.timeout = 3000
+axios.defaults.timeout = 3000
 
 axios.interceptors.response.use(undefined, (err) => {
   const { config, message } = err
