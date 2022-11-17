@@ -1,5 +1,6 @@
+const express = require('express')
 const axios = require('axios')
-axios.defaults.timeout = 3000
+//axios.defaults.timeout = 3000
 
 axios.interceptors.response.use(undefined, (err) => {
   const { config, message } = err
@@ -19,17 +20,28 @@ axios.interceptors.response.use(undefined, (err) => {
   })
   return delayRetryRequest.then(() => axios(config))
 })
-;(async () => {
-  //only works for ERC-20/ERC-721
-  const response = await axios.get(
-    `https://webhook.site/3f0747a2-379e-426a-808f-5d9b42592524`,
-    { retry: 3, retryDelay: 1000 }
-  )
-  if (response.status) {
-    console.log('success')
-  } else {
-    throw 'Failed to get response from getTokenInfoByContractAddress()'
-  }
-})().catch((err) => {
-  console.error(err)
+
+const app = express()
+const port = 8081
+
+app.get('/', (req, res) => {
+  ;(async () => {
+    //only works for ERC-20/ERC-721
+    const response = await axios.get(
+      `https://webhook.site/3f0747a2-379e-426a-808f-5d9b42592524`,
+      { retry: 3, retryDelay: 1000 }
+    )
+    if (response.status) {
+      console.log('success')
+    } else {
+      throw 'Failed to get response from getTokenInfoByContractAddress()'
+    }
+  })().catch((err) => {
+    console.error(err)
+  })
+  res.send('Hello World!')
+})
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
 })
